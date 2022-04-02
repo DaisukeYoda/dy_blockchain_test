@@ -7,8 +7,10 @@ import time
 class BlockChainTest:
 
     def __init__(self,chain_adress=None,difficulty=1):
+        first_tx = self.get_block(tx=[],nonce=0,prev_hash='')
+
         self.chain_adress = chain_adress
-        self.chain = []
+        self.chain = [first_tx]
         self.tx_pool = []
 
         if type(difficulty) == int:
@@ -38,6 +40,8 @@ class BlockChainTest:
         }
 
         self.chain.append(block)
+
+        self.tx_pool.clear()
 
     def get_hash(self,block):
         
@@ -74,7 +78,9 @@ class BlockChainTest:
 
         previous_hash = self.get_hash(self.chain[-1])
 
-        self.add_block(nonce=nonce, prev_hash=previous_hash,tx_pool=self.tx_pool)
+        transaction = self.tx_pool.copy()
+
+        self.add_block(nonce=nonce, prev_hash=previous_hash,tx_pool=transaction)
 
         return True
 
