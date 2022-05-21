@@ -1,11 +1,29 @@
 import math
 import binascii
+import random
 
 def lcm(p,q):
     return (p * q) // math.gcd(p, q)
 
 
+def is_prime(q):
+    # Prime Number 2 is not eligible in blockchain.
+    if q == 2: return False
+    if q < 2 or q&1 == 0: return False
+    return pow(2, q-1, q) == 1
+
+
 class RSA(object):
+    @staticmethod
+    def get_primes(byte=1024):
+        n,m = 1,1
+        while not is_prime(n):
+            n = random.randint(2,2**byte)
+        while not is_prime(m):
+            m = random.randint(2,2**byte)
+
+        return n,m
+            
 
     @staticmethod
     def generate_keys(p,q):
@@ -59,3 +77,5 @@ if __name__ == '__main__':
     print(decrypted_)
 
 
+    n,m = RSA.get_primes(1024)
+    print(n)
